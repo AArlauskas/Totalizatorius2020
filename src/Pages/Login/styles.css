@@ -1,0 +1,31 @@
+.image img {
+  width: 250px;
+  height: 300px;
+}
+
+.image {
+  text-align: center;
+  margin-top: 25px;
+}
+
+.form {
+  margin: 0 auto;
+  margin-top: 30px;
+  width: 300px;
+}
+
+.form button {
+  margin-left: 17%;
+  width: 200px;
+}
+
+.form p {
+  text-align: center;
+  margin-top: 15px;
+  color: red;
+}
+
+.register {
+  text-align: center;
+  margin-top: 10px;
+}
