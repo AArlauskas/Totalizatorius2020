@@ -8,8 +8,8 @@ import AdminMatch from "../../../Components/AdminMatch/AdminMatch";
 class Admin extends Component {
   currentDate = new Date();
   state = {
-    Team1name: null,
-    Team2name: null,
+    Team1name: "Airija",
+    Team2name: "Airija",
     date: null,
     time: null,
     DidAdd: false,

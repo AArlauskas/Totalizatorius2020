@@ -20,7 +20,7 @@ class Results extends Component {
           <Loading />
         ) : (
           <div className="table">
-            <Table striped bordered hover responsive size="sm">
+            <Table striped bordered hover responsive size="sm" variant="dark">
               <thead>
                 <tr>
                   <th style={{ verticalAlign: "middle" }}>#</th>
@@ -54,7 +54,8 @@ class Results extends Component {
                     </td>
                     <td style={{ verticalAlign: "middle" }}>
                       <Link to={`/guesess/${user.username}`}>
-                        {user.username}
+                        {user.name}{" "}
+                        {user.surname === null ? null : user.surname[0] + "."}
                       </Link>
                     </td>
                     <td

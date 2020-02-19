@@ -24,7 +24,7 @@ class Login extends Component {
             <Form.Group controlId="formGroupEmail">
               <Form.Control
                 type="text"
-                placeholder="Username"
+                placeholder="Prisijungimo vardas"
                 onChange={event =>
                   this.setState({ username: event.target.value })
                 }
@@ -33,7 +33,7 @@ class Login extends Component {
             <Form.Group controlId="formGroupPassword">
               <Form.Control
                 type="password"
-                placeholder="Password"
+                placeholder="Slaptažodis"
                 onChange={event =>
                   this.setState({ password: event.target.value })
                 }
@@ -42,38 +42,63 @@ class Login extends Component {
             <div className="button">
               <Button
                 type="button"
+                variant="success"
                 disabled={
                   this.state.username === "" || this.state.password === ""
                 }
                 onClick={this.handleSignIn}
               >
-                Sign in
+                Prisijungti
               </Button>
             </div>
             <div className="register">
-              <Link to="/Register">Register</Link>
+              <Link to="/Register" style={{ color: "white" }}>
+                Registracija
+              </Link>
             </div>
             <div className="badAttempt">
-              {this.state.Wrong ? <p>Wrong username or password</p> : null}
+              {this.state.Wrong ? (
+                <p>Blogas prisijungimo vardas arba slaptažodis</p>
+              ) : null}
             </div>
           </Form>
         </div>
       </div>
     );
   }
-  handleSignIn = () => {
-    Axios.get("http://lozikas-001-site1.htempurl.com/api/Users/login", {
-      params: { username: this.state.username, password: this.state.password }
-    }).then(
-      response =>
-        this.props.changeLoginState(
-          response.data.UserId,
-          response.data.username,
-          response.data.points,
-          response.data.IsAdmin
-        ),
-      this.setState({ Wrong: true })
-    );
+  handleSignIn = async () => {
+    let response = await this.fetchLoginData();
+    if (response === undefined) {
+      this.setState({ Wrong: true });
+    } else {
+      this.props.changeLoginState(
+        response.data.UserId,
+        response.data.username,
+        response.data.points,
+        response.data.IsAdmin
+      );
+
+      console.log(response.status);
+    }
+  };
+
+  fetchLoginData = async () => {
+    let result;
+    try {
+      result = await Axios.get(
+        "http://lozikas-001-site1.htempurl.com/api/Users/login",
+        {
+          params: {
+            username: this.state.username,
+            password: this.state.password
+          }
+        }
+      );
+    } catch {
+      return null;
+    } finally {
+      return result;
+    }
   };
 }
 export default Login;

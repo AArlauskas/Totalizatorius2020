@@ -9,6 +9,8 @@ import Axios from "axios";
 class Register extends Component {
   state = {
     username: "",
+    name: "",
+    surname: "",
     password: "",
     RepeatedPassword: "",
     DoesMatch: true,
@@ -23,19 +25,35 @@ class Register extends Component {
         </div>
         <div className="form">
           <Form>
-            <Form.Group controlId="formGroupEmail">
+            <Form.Group controlId="formGroupUsername">
               <Form.Control
                 type="text"
-                placeholder="Username"
+                placeholder="Prisijungimo vardas"
                 onChange={event =>
                   this.setState({ username: event.target.value })
+                }
+              />
+            </Form.Group>
+            <Form.Group controlId="formGroupName">
+              <Form.Control
+                type="text"
+                placeholder="Vardas"
+                onChange={event => this.setState({ name: event.target.value })}
+              />
+            </Form.Group>
+            <Form.Group controlId="formGroupSurname">
+              <Form.Control
+                type="text"
+                placeholder="Pavardė"
+                onChange={event =>
+                  this.setState({ surname: event.target.value })
                 }
               />
             </Form.Group>
             <Form.Group controlId="formGroupPassword1">
               <Form.Control
                 type="password"
-                placeholder="Password"
+                placeholder="Slaptažodis"
                 onChange={event =>
                   this.setState({ password: event.target.value })
                 }
@@ -44,7 +62,7 @@ class Register extends Component {
             <Form.Group controlId="formGroupPassword2">
               <Form.Control
                 type="password"
-                placeholder="Repeat password"
+                placeholder="Pakartoti slaptažodį"
                 onChange={event =>
                   this.setState({
                     RepeatedPassword: event.target.value,
@@ -59,19 +77,26 @@ class Register extends Component {
                 disabled={
                   this.state.username.length < 5 ||
                   this.state.password.length < 5 ||
-                  this.state.RepeatedPassword.length < 5
+                  this.state.RepeatedPassword.length < 5 ||
+                  this.state.name === "" ||
+                  this.state.surname === "" ||
+                  this.state.username.includes(" ") ||
+                  this.state.username.includes("/") ||
+                  this.state.username.includes("?")
                 }
                 onClick={this.handleRegister}
               >
-                Register
+                Registruotis
               </Button>
             </div>
             <div className="badAttempt">
-              {this.state.DoesMatch ? null : <p>Passwords do not match!</p>}
-              {this.state.AlreadyExists ? <p>User already exists!</p> : null}
+              {this.state.DoesMatch ? null : <p>Nesutampa Slaptažodžiai!</p>}
+              {this.state.AlreadyExists ? (
+                <p>Vartotojas tokiu vardu jau egzistuoja!</p>
+              ) : null}
             </div>
             <div className="goodAttempt">
-              {this.state.DidRegister ? <p>Successfully registered!</p> : null}
+              {this.state.DidRegister ? <p>Sėkmingai užsiregistruota</p> : null}
               {this.state.DidRegister ? <Redirect to="/" /> : null}
             </div>
           </Form>
@@ -97,7 +122,9 @@ class Register extends Component {
       "http://lozikas-001-site1.htempurl.com/api/Users",
       {
         username: this.state.username,
-        password: this.state.password
+        password: this.state.password,
+        name: this.state.name,
+        surname: this.state.surname
       }
     );
     return data.status;

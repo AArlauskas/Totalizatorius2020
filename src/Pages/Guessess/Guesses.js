@@ -12,6 +12,7 @@ class Guesses extends Component {
   render() {
     return (
       <div className="Matches">
+        {}
         {this.state.data === null || this.state.URLid === null ? (
           <Loading />
         ) : (
@@ -22,7 +23,7 @@ class Guesses extends Component {
                 UserId={this.props.UserId}
                 URLid={this.state.URLid}
               />
-              <hr />
+              <hr style={{ backgroundColor: "white" }} />
             </div>
           ))
         )}
@@ -37,13 +38,17 @@ class Guesses extends Component {
       params: {
         username: param
       }
-    })
-      .then(Response => this.setState({ URLid: Response.data }))
-      .then(
-        Axios.get(
-          "http://lozikas-001-site1.htempurl.com/api/matches"
-        ).then(data => this.setState({ data: data.data }))
-      );
+    }).then(Response => this.setState({ URLid: Response.data }));
+  }
+
+  componentDidMount() {
+    Axios.get("http://lozikas-001-site1.htempurl.com/api/matches").then(data =>
+      this.setState({ data: data.data })
+    );
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.interval);
   }
 }
 

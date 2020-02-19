@@ -17,6 +17,7 @@ import Register from "./Pages/Register/Register";
 import Admin from "./Pages/Home/Admin/Admin";
 import Results from "./Pages/Results/Results";
 import Axios from "axios";
+import Credentials from "./Pages/ChangeCredentials/Credentials";
 
 class App extends Component {
   state = {
@@ -52,7 +53,11 @@ class App extends Component {
                 component={() => <Login changeLoginState={this.LoginMark} />}
               />
               {this.state.isLoggedIn ? (
-                <Route path="/home" exact component={Home} />
+                <Route
+                  path="/home"
+                  exact
+                  component={() => <Home userId={this.state.userId} />}
+                />
               ) : null}
               {this.state.isLoggedIn ? (
                 <Route path="/rules" exact component={Rules} />
@@ -74,6 +79,19 @@ class App extends Component {
                 : null}
               {this.state.isLoggedIn ? (
                 <Route
+                  path="/credentials"
+                  exact
+                  component={() => (
+                    <Credentials
+                      changeLoginState={this.LogoutMark}
+                      Username={this.state.username}
+                      UserId={this.state.userId}
+                    />
+                  )}
+                />
+              ) : null}
+              {this.state.isLoggedIn ? (
+                <Route
                   path="/results"
                   exact
                   component={() => <Results username={this.state.username} />}
@@ -82,6 +100,7 @@ class App extends Component {
               {this.state.isLoggedIn && this.state.isAdmin ? (
                 <Route path="/admin" exact component={Admin} />
               ) : null}
+
               {this.state.isLoggedIn && this.state.RouteUsernames !== null ? (
                 <Route component={NotFound} />
               ) : null}

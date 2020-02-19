@@ -4,6 +4,7 @@ import { IoIosDoneAll } from "react-icons/io";
 
 import "./styles.css";
 import Axios from "axios";
+import { Link } from "react-router-dom";
 
 class Match extends Component {
   state = {
@@ -33,8 +34,9 @@ class Match extends Component {
               <InputGroup.Prepend>
                 <InputGroup.Text
                   style={{
-                    backgroundColor: "white",
-                    width: 150
+                    minWidth: 100,
+                    backgroundColor: this.GuessBackgroundColor(),
+                    justifyContent: "flex-end"
                   }}
                 >
                   {this.state.Team1Name}
@@ -57,7 +59,7 @@ class Match extends Component {
                   onChange={event =>
                     this.setState({ Team1Input: event.target.value })
                   }
-                  style={this.GuessBackgroundColor()}
+                  //style={this.GuessBackgroundColor()}
                 />
               </div>
             </InputGroup>
@@ -84,14 +86,14 @@ class Match extends Component {
                   onChange={event =>
                     this.setState({ Team2Input: event.target.value })
                   }
-                  style={this.GuessBackgroundColor()}
+                  //style={this.GuessBackgroundColor()}
                 />
               </div>
               <InputGroup.Append>
                 <InputGroup.Text
                   style={{
-                    backgroundColor: "white",
-                    width: 150
+                    minWidth: 100,
+                    backgroundColor: this.GuessBackgroundColor()
                   }}
                 >
                   <div>{this.state.Team2Name}</div>
@@ -105,7 +107,9 @@ class Match extends Component {
             in={
               this.state.Team1Input.length === 1 &&
               !this.state.IsDone &&
-              this.state.Team2Input.length === 1
+              this.state.Team2Input.length === 1 &&
+              isFinite(String(this.state.Team1Input)) &&
+              isFinite(String(this.state.Team2Input))
             }
           >
             <Button variant="success" size="sm" onClick={this.SubmitGuess}>
@@ -113,9 +117,11 @@ class Match extends Component {
             </Button>
           </Collapse>
           {this.state.DidGetResults ? (
-            <h3>
-              <IoIosDoneAll />
-            </h3>
+            <div>
+              <h3>
+                <IoIosDoneAll />
+              </h3>
+            </div>
           ) : null}
           <div className="details">
             <p>
@@ -142,13 +148,15 @@ class Match extends Component {
       </div>
     );
   }
-  SubmitGuess = () => {
+  SubmitGuess = async () => {
     if (this.state.DidFetch) {
       Axios.put("http://lozikas-001-site1.htempurl.com/api/Guesses", {
         id: this.state.GuessId,
         Team1Score: this.state.Team1Input,
         Team2Score: this.state.Team2Input
-      });
+      }).then(Response =>
+        Response === null ? null : this.setState({ DidGetResults: true })
+      );
     } else {
       let payload = {
         Team1Score: this.state.Team1Input,
@@ -157,9 +165,13 @@ class Match extends Component {
         Match: this.state.MatchId
       };
 
-      Axios.post("http://lozikas-001-site1.htempurl.com/api/Guesses", payload);
+      Axios.post(
+        "http://lozikas-001-site1.htempurl.com/api/Guesses",
+        payload
+      ).then(Response =>
+        Response === null ? null : this.setState({ DidGetResults: true })
+      );
     }
-    this.setState({ DidGetResults: true });
   };
 
   componentDidMount() {
@@ -183,10 +195,15 @@ class Match extends Component {
 
   GuessBackgroundColor = () => {
     if (this.state.Team1Input === -1 && this.state.Team2Input === -1)
-      return { backgroundColor: "red" };
+      return "#ff4d4d";
     else if (this.state.Points === -3 || this.state.Points === -7)
-      return { backgroundColor: "lime" };
-    return null;
+      return "#65d45f";
+    else if (
+      (this.state.Points !== -3 || this.state.Points !== -7) &&
+      this.state.Points !== null
+    )
+      return "#ffff66";
+    return "white";
   };
 }
 

@@ -13,7 +13,7 @@ class NavigationBar extends Component {
       <div>
         {isMobile ? (
           <div className="mobile">
-            <Menu disableAutoFocus>
+            <Menu disableAutoFocus styles={{ backgroundColor: "white" }}>
               <a id="home" className="menu-item" href="/home">
                 Pagrindinis puslapis
               </a>
@@ -30,8 +30,12 @@ class NavigationBar extends Component {
               <a id="rules" className="menu-item" href="/rules">
                 Taisyklės
               </a>
-              <a id="changePassword" className="menu-item" href="/temp">
-                Pakeisti slaptažodį
+              <a
+                id="changeCredentials"
+                className="menu-item"
+                href="/credentials"
+              >
+                Pakeisti duomenis
               </a>
               <a
                 id="logout"
@@ -74,8 +78,8 @@ class NavigationBar extends Component {
                         Admin page
                       </NavDropdown.Item>
                     ) : null}
-                    <NavDropdown.Item href="#action/3.1">
-                      Pakeisti slaptažodį
+                    <NavDropdown.Item href="/credentials">
+                      Pakeisti duomenis
                     </NavDropdown.Item>
                     <NavDropdown.Item
                       href="/"

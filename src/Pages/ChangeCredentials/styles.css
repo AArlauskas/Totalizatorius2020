@@ -1,0 +1,14 @@
+.tabs {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  padding: 10px;
+}
+
+.form {
+  text-align: center;
+}
+.button {
+  margin-right: 35px;
+}

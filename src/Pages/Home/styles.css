@@ -1,0 +1,11 @@
+.home {
+  text-align: center;
+}
+
+.tabs {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  padding: 10px;
+}
